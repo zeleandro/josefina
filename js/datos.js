@@ -2,8 +2,8 @@
    DATOS DE LA INVITACIÓN
    Este es el único archivo que hace falta tocar para actualizar
    la web. Cambiá el valor, guardá, y hacé `git push`.
-   Lo que diga 'COMPLETAR' se muestra en la página como
-   "a confirmar" en vez de romperse.
+   Si algún valor queda en 'COMPLETAR', esa línea (o la sección entera,
+   si es un link) no se muestra, en vez de quedar rota.
    ───────────────────────────────────────────────────────────── */
 
 const DATOS = {
