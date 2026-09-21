@@ -15,8 +15,8 @@ const DATOS = {
 
   iglesia: {
     nombre: 'Iglesia de la Asunción',
-    direccion: 'COMPLETAR',          // ej: 'Av. Ejemplo 1234, San Isidro'
-    maps: 'COMPLETAR',               // link de Google Maps del lugar
+    direccion: 'Asunción 685, Resistencia, Chaco',
+    maps: 'https://www.google.com/maps/search/?api=1&query=Asunci%C3%B3n%20685%2C%20H3508%20Resistencia%2C%20Chaco',
   },
 
   festejo: {
