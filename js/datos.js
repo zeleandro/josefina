@@ -27,7 +27,7 @@ const DATOS = {
   },
 
   // Google Form de confirmación de asistencia (link para compartir).
-  formulario: 'COMPLETAR',
+  formulario: 'https://forms.gle/yiZaa56oKGBNnAdd9',
 
   // Álbum compartido de Google Photos, creado con la opción
   // "Permitir que colaboren" para que los invitados puedan subir fotos.
