@@ -64,9 +64,12 @@
       ? DATOS.iglesia.nombre
       : DATOS.iglesia.nombre + ', ' + DATOS.iglesia.direccion;
 
-    var detalle = 'Bautismo de Josefina.\n'
-      + 'Ceremonia en ' + DATOS.iglesia.nombre + ' a las 17 hs.\n'
-      + 'Después seguimos festejando ' + DATOS.festejo.titulo.toLowerCase() + '.\n\n'
+    var festejo = DATOS.festejo.titulo;
+    if (!falta(DATOS.festejo.direccion)) festejo += ' — ' + DATOS.festejo.direccion;
+
+    var detalle = 'Bautismo de Josefina.\n\n'
+      + 'Ceremonia: ' + lugar + ', a las 17 hs.\n'
+      + 'Festejo: ' + festejo + '.\n\n'
       + location.href;
 
     btn.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE'

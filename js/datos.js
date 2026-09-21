@@ -21,9 +21,9 @@ const DATOS = {
 
   festejo: {
     titulo: 'En casa de Meli, Fede y Josefina',
-    direccion: 'COMPLETAR',          // ej: 'Calle Ejemplo 567, Pilar'
-    hora: 'COMPLETAR',               // ej: 'desde las 19 hs'
-    maps: 'COMPLETAR',
+    direccion: 'Felipe Gallardo 1050, Resistencia, Chaco',
+    hora: 'A continuación de la ceremonia',
+    maps: 'https://www.google.com/maps/search/?api=1&query=-27.420571,-58.934523',
   },
 
   // Google Form de confirmación de asistencia (link para compartir).
