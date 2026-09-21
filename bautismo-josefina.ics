@@ -1,0 +1,23 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Bautismo de Josefina//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:bautismo-josefina-20261024@zeleandro.github.io
+DTSTAMP:20260921T120000Z
+DTSTART:20261024T200000Z
+DTEND:20261025T020000Z
+SUMMARY:Bautismo de Josefina
+LOCATION:Iglesia de la Asuncion
+DESCRIPTION:Melisa y Federico te invitan al bautismo de Josefina.\nCeremon
+ ia a las 17 hs en la Iglesia de la Asuncion\, y despues seguimos festejan
+ do en casa.\n\nTodos los detalles: https://zeleandro.github.io/josefina/
+URL:https://zeleandro.github.io/josefina/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Manana es el bautismo de Josefina
+END:VALARM
+END:VEVENT
+END:VCALENDAR

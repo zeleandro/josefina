@@ -1,0 +1,506 @@
+/* ══════════════════════════════════════════════════════════════
+   Bautismo de Josefina — 24 de octubre de 2026
+   Paleta y proporciones tomadas de la tarjeta original.
+   ══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Colores muestreados pixel a pixel de tarjeta.jpg */
+  --crema:      #F6E7DA;   /* el papel de la tarjeta */
+  --fondo:      #F0DDCE;   /* la página, un tono más profundo que el papel */
+  --fondo-2:    #EBD5C4;
+  --dorado:     #A87B3C;
+  --dorado-cl:  #C9A66B;
+  --dorado-os:  #7A5729;   /* dorado legible para texto chico */
+  --dorado-bt:  #8A6430;   /* fondo del boton principal */
+  --rosa:       #C9908C;
+  --rosa-os:    #A66C68;   /* rosa legible para texto informativo */
+  --rosa-cl:    #E7C6BF;
+  --rosa-pal:   #F7E6DF;
+  --salvia:     #7E8C6A;
+  --tinta:      #5B4A3B;
+  --tinta-cl:   #6B5847;
+
+  --serif:  'Cormorant Garamond', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --script: 'Great Vibes', 'Snell Roundhand', 'Apple Chancery', cursive;
+  --mano:   'Parisienne', 'Snell Roundhand', 'Apple Chancery', cursive;
+
+  --sombra: 0 18px 50px -24px rgba(91, 74, 59, .45);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0);
+  background: var(--fondo);
+  background-image: radial-gradient(120% 70% at 50% 0%, #F7E7D9 0%, var(--fondo) 45%, var(--fondo-2) 100%);
+  background-attachment: fixed;
+  color: var(--tinta);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.6;
+  /* Cormorant trae cifras elzevirianas por defecto: lindas en un parrafo,
+     confusas en una fecha y en un contador. */
+  font-variant-numeric: lining-nums;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+[hidden] { display: none !important; }
+
+/* ────────────── PORTADA ────────────── */
+
+.portada {
+  padding: clamp(18px, 4vw, 48px) clamp(14px, 4vw, 32px) clamp(10px, 3vw, 28px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.papel {
+  position: relative;
+  width: 100%;
+  max-width: 660px;
+  background: var(--crema);
+  border-radius: clamp(18px, 4vw, 30px);
+  box-shadow: var(--sombra);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* El doble filete dorado de la tarjeta */
+.papel::before,
+.papel::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  border: 1px solid var(--dorado-cl);
+  border-radius: clamp(12px, 3vw, 22px);
+  z-index: 1;
+}
+.papel::before { inset: clamp(8px, 2vw, 14px); }
+.papel::after  { inset: clamp(13px, 2.8vw, 20px); border-color: rgba(168, 123, 60, .3); border-radius: clamp(8px, 2.4vw, 17px); }
+
+.papel__contenido {
+  position: relative;
+  z-index: 2;
+  padding: clamp(22px, 5vw, 38px) clamp(20px, 5vw, 46px) clamp(26px, 5vw, 40px);
+  text-align: center;
+}
+
+/* Las flores de las cuatro esquinas, espejadas desde un solo archivo */
+.esquina {
+  position: absolute;
+  width: clamp(88px, 22vw, 148px);
+  height: auto;
+  z-index: 3;
+  pointer-events: none;
+  user-select: none;
+}
+.esquina--si { top: 0; left: 0; }
+.esquina--sd { top: 0; right: 0; transform: scaleX(-1); }
+.esquina--ii { bottom: 0; left: 0; transform: scaleY(-1); }
+.esquina--id { bottom: 0; right: 0; transform: scale(-1); }
+
+/* La ilustración conserva el crema del original: los bordes se
+   disuelven contra el papel con una máscara en vez de cortarse. */
+.ilustracion {
+  width: min(100%, 470px);
+  margin: 0 auto clamp(2px, 1vw, 8px);
+}
+
+.intro {
+  margin: 0;
+  font-size: clamp(.95rem, 3.6vw, 1.22rem);
+  font-weight: 400;
+  letter-spacing: .06em;
+  color: var(--tinta-cl);
+}
+
+.titulo {
+  font-family: var(--script);
+  font-weight: 400;
+  color: var(--dorado);
+  font-size: clamp(3.5rem, 15.5vw, 6rem);
+  line-height: .92;
+  margin: clamp(-2px, .4vw, 4px) 0 0;
+}
+
+.de {
+  font-size: clamp(1.05rem, 4vw, 1.4rem);
+  color: var(--tinta-cl);
+  margin: clamp(0px, .6vw, 4px) 0 0;
+}
+
+.nombre {
+  font-family: var(--script);
+  font-weight: 400;
+  color: var(--rosa);
+  font-size: clamp(3.9rem, 18vw, 7rem);
+  line-height: .95;
+  margin: clamp(-6px, -1vw, 0px) 0 0;
+}
+
+/* Filete: dos volutas y un corazón, dibujados en SVG */
+.filete {
+  display: block;
+  width: min(72%, 240px);
+  height: auto;
+  margin: clamp(2px, 1.2vw, 9px) auto;
+  color: var(--dorado-cl);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+.filete--rosa { color: var(--rosa-cl); width: min(62%, 210px); }
+.filete__corazon { fill: currentColor; stroke: none; }
+
+.personas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  margin-top: clamp(10px, 3vw, 20px);
+}
+.persona { min-width: 0; padding: 0 clamp(4px, 2vw, 16px); }
+.persona + .persona {
+  border-left: 1px solid var(--dorado-cl);
+}
+
+.persona__rol {
+  margin: 0;
+  font-size: clamp(.68rem, 2.6vw, .82rem);
+  font-weight: 600;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: var(--dorado-os);
+}
+.persona__corazon {
+  margin: .15em 0;
+  font-size: .72rem;
+  color: var(--rosa);
+}
+.persona__nombres {
+  margin: 0;
+  font-family: var(--mano);
+  font-size: clamp(1.15rem, 4.9vw, 1.95rem);
+  line-height: 1.3;
+  overflow-wrap: break-word;
+  color: var(--dorado-os);
+}
+
+.guirnalda {
+  width: clamp(120px, 34%, 190px);
+  margin: clamp(14px, 3.5vw, 24px) auto 0;
+  opacity: .92;
+}
+
+/* Invitación a seguir bajando */
+.bajar {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: clamp(18px, 4vw, 30px);
+  padding: 10px 18px;
+  text-decoration: none;
+  color: var(--dorado-os);
+  font-size: .95rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  border-radius: 999px;
+}
+.bajar svg { width: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; animation: flota 2.6s ease-in-out infinite; }
+@keyframes flota { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+
+/* ────────────── ESTRUCTURA DE SECCIONES ────────────── */
+
+.seccion {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: clamp(46px, 11vw, 88px) clamp(20px, 6vw, 40px);
+}
+
+.antetitulo {
+  margin: 0 0 .5em;
+  font-size: clamp(.7rem, 2.8vw, .8rem);
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--dorado-os);
+}
+
+.titulo-seccion {
+  margin: 0 0 .35em;
+  font-family: var(--script);
+  font-weight: 400;
+  font-size: clamp(2rem, 8vw, 3.3rem);
+  line-height: 1.05;
+  color: var(--dorado);
+}
+.titulo-seccion--centro { text-align: center; }
+
+.parrafo {
+  margin: 0 0 1.4em;
+  font-size: clamp(1.02rem, 3.6vw, 1.15rem);
+  color: var(--tinta);
+  max-width: 46ch;
+}
+.parrafo--centro { margin-inline: auto; text-align: center; }
+
+.dato { margin: 0 0 .3em; font-size: clamp(1.05rem, 3.8vw, 1.2rem); }
+.dato--suave { color: var(--tinta-cl); margin-bottom: 1.3em; }
+
+/* ────────────── BOTONES ────────────── */
+
+.boton {
+  display: inline-block;
+  padding: .78em 1.7em;
+  border: 1px solid var(--dorado-cl);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--dorado-os);
+  font-family: var(--serif);
+  font-size: clamp(.95rem, 3.4vw, 1.02rem);
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color .25s ease, color .25s ease, transform .25s ease;
+}
+.boton:hover,
+.boton:focus-visible { background: var(--dorado-bt); border-color: var(--dorado-bt); color: #FFF7EE; transform: translateY(-1px); }
+
+.boton--principal { background: var(--dorado-bt); border-color: var(--dorado-bt); color: #FFF7EE; }
+.boton--principal:hover,
+.boton--principal:focus-visible { background: #6E4E24; border-color: #6E4E24; }
+
+:focus-visible { outline: 2px solid var(--dorado); outline-offset: 3px; }
+
+.botones { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: clamp(26px, 6vw, 40px); }
+
+/* ────────────── CUENTA REGRESIVA ────────────── */
+
+.cuando { text-align: center; }
+
+.fecha-grande {
+  margin: 0;
+  font-size: clamp(1.35rem, 5.6vw, 2rem);
+  font-weight: 500;
+  letter-spacing: .02em;
+}
+.fecha-hora {
+  margin: .1em 0 0;
+  font-family: var(--mano);
+  font-size: clamp(1.8rem, 7vw, 2.6rem);
+  color: var(--rosa-os);
+}
+
+.cuenta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(8px, 2.4vw, 16px);
+  margin-top: clamp(24px, 6vw, 38px);
+}
+.cuenta__u {
+  background: var(--crema);
+  border: 1px solid rgba(201, 166, 107, .5);
+  border-radius: clamp(12px, 3vw, 18px);
+  padding: clamp(12px, 3.2vw, 20px) 4px clamp(9px, 2.4vw, 14px);
+  box-shadow: 0 10px 26px -20px rgba(91, 74, 59, .6);
+}
+.cuenta__n {
+  display: block;
+  font-size: clamp(1.9rem, 9vw, 3.1rem);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--dorado);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.cuenta__e {
+  display: block;
+  margin-top: .45em;
+  font-size: clamp(.62rem, 2.5vw, .76rem);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--tinta-cl);
+}
+.cuenta__mensaje {
+  margin: clamp(22px, 6vw, 34px) 0 0;
+  font-family: var(--script);
+  font-size: clamp(2rem, 8vw, 3rem);
+  color: var(--rosa-os);
+}
+
+/* ────────────── CEREMONIA / FESTEJO ────────────── */
+
+.lugar {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1fr);
+  gap: clamp(22px, 6vw, 48px);
+  align-items: center;
+}
+.lugar--invertido .lugar__foto { order: 2; }
+
+.lugar__foto img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 32%;
+  border-radius: clamp(14px, 4vw, 22px);
+  box-shadow: var(--sombra);
+}
+.lugar--invertido .lugar__foto img { aspect-ratio: 1 / 1; }
+
+@media (max-width: 640px) {
+  .lugar { grid-template-columns: 1fr; }
+  .lugar--invertido .lugar__foto { order: 0; }
+  .lugar__foto img { aspect-ratio: 3 / 2; }
+  .lugar--invertido .lugar__foto img { aspect-ratio: 3 / 2; }
+}
+
+/* ────────────── GALERÍA ────────────── */
+
+.galeria-seccion { max-width: 1000px; text-align: center; }
+
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(14px, 3.4vw, 26px);
+  margin-top: clamp(26px, 6vw, 40px);
+}
+@media (min-width: 760px) {
+  .galeria { grid-template-columns: repeat(3, 1fr); }
+}
+
+.foto { margin: 0; }
+.foto img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: clamp(10px, 2.4vw, 16px);
+  border: 1px solid rgba(201, 166, 107, .55);
+  box-shadow: var(--sombra);
+  cursor: zoom-in;
+  transition: transform .35s ease;
+}
+.foto img:hover { transform: translateY(-4px) scale(1.012); }
+.foto figcaption {
+  margin-top: .6em;
+  text-align: center;
+  font-style: italic;
+  font-size: clamp(.9rem, 3.2vw, 1rem);
+  color: var(--tinta-cl);
+}
+/* Las fotos se apoyan apenas giradas, como sobre una mesa */
+.foto:nth-child(3n+1) img { rotate: -1.1deg; }
+.foto:nth-child(3n+2) img { rotate: .7deg; }
+.foto:nth-child(3n)   img { rotate: -.4deg; }
+
+/* ────────────── ÁLBUM ────────────── */
+
+.album {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(24px, 6vw, 52px);
+  align-items: center;
+}
+.album__qr { text-align: center; }
+.qr {
+  width: clamp(130px, 34vw, 172px);
+  height: clamp(130px, 34vw, 172px);
+  margin: 0 auto;
+  padding: 12px;
+  background: var(--crema);
+  border: 1px solid var(--dorado-cl);
+  border-radius: 14px;
+  box-shadow: var(--sombra);
+}
+.qr svg, .qr img { width: 100%; height: 100%; display: block; }
+.qr--vacio { display: grid; place-items: center; font-size: .8rem; color: var(--tinta-cl); font-style: italic; }
+.qr__pie {
+  margin: .8em 0 0;
+  font-size: .82rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--tinta-cl);
+}
+
+@media (max-width: 640px) {
+  .album { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .album .parrafo { margin-inline: auto; }
+}
+
+/* ────────────── CONFIRMACIÓN ────────────── */
+
+.confirmar { text-align: center; }
+
+/* ────────────── CIERRE ────────────── */
+
+.cierre {
+  text-align: center;
+  padding: clamp(30px, 8vw, 60px) 20px clamp(46px, 10vw, 76px);
+}
+.cierre .guirnalda { width: clamp(130px, 40%, 200px); margin-bottom: clamp(10px, 3vw, 18px); }
+.cierre__texto {
+  margin: 0;
+  font-family: var(--script);
+  font-size: clamp(2.4rem, 10vw, 3.4rem);
+  color: var(--rosa-os);
+}
+.cierre__nombre {
+  margin: .3em 0 0;
+  font-family: var(--mano);
+  font-size: clamp(1.15rem, 4.6vw, 1.5rem);
+  color: var(--dorado-os);
+}
+
+/* ────────────── VISOR DE FOTOS ────────────── */
+
+.visor {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 5vw, 48px);
+  background: rgba(58, 45, 35, .93);
+  backdrop-filter: blur(3px);
+}
+.visor__img {
+  max-width: 100%;
+  max-height: 86vh;
+  border-radius: 10px;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .7);
+}
+.visor__cerrar, .visor__nav {
+  position: absolute;
+  background: none;
+  border: 0;
+  color: #F6E7DA;
+  cursor: pointer;
+  line-height: 1;
+  padding: 10px 16px;
+  font-family: var(--serif);
+}
+.visor__cerrar { top: max(10px, env(safe-area-inset-top, 0)); right: 10px; font-size: 2.4rem; }
+.visor__nav { top: 50%; transform: translateY(-50%); font-size: 3.2rem; }
+.visor__nav--prev { left: 2px; }
+.visor__nav--next { right: 2px; }
+.visor__cerrar:hover, .visor__nav:hover { color: #fff; }
+
+/* ────────────── APARICIÓN AL SCROLLEAR ────────────── */
+
+.revelar { opacity: 0; transform: translateY(18px); transition: opacity .8s ease, transform .8s ease; }
+.revelar.visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .revelar { opacity: 1; transform: none; transition: none; }
+  .bajar svg { animation: none; }
+  .foto img:hover { transform: none; }
+  .boton { transition: none; }
+}
