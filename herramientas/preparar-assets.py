@@ -27,10 +27,10 @@ TARJETA = 'tarjeta-modificada.jpg'
 PAPEL = (0xF6, 0xE9, 0xDD)
 
 # Las fotos de Josefina, en el mismo orden en que aparecen en la galería.
-GALERIA = ['recien-nacida', 'primeros-dias', 'ojitos', 'bebe',
-           'felicidad', 'puchero', 'merienda', 'alegria', 'sunset']
+GALERIA = ['pequenita', 'primeros-dias', 'ojitos', 'bebe',
+           'felicidad', 'puchero', 'alegria', 'sunset']
 # La que encabeza la sección de la ceremonia.
-CEREMONIA = 'pequenita'
+CEREMONIA = 'recien-nacida'
 
 def sips(*args):
     subprocess.run(['sips'] + list(args), capture_output=True, check=True)

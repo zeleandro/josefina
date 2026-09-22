@@ -358,17 +358,22 @@ img { max-width: 100%; height: auto; display: block; }
 
 .galeria-seccion { max-width: 1000px; text-align: center; }
 
+/* Flex y no grid: así la última fila se centra sola cuando las fotos no
+   llenan una fila entera, y la galería aguanta cualquier cantidad. */
 .galeria {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: clamp(14px, 3.4vw, 26px);
+  --hueco: clamp(14px, 3.4vw, 26px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--hueco);
   margin-top: clamp(26px, 6vw, 40px);
 }
+.foto { flex: 0 1 calc((100% - var(--hueco)) / 2); }
 @media (min-width: 760px) {
-  .galeria { grid-template-columns: repeat(3, 1fr); }
+  .foto { flex: 0 1 calc((100% - var(--hueco) * 2) / 3); }
 }
 
-.foto { margin: 0; }
+.foto { margin: 0; min-width: 0; }
 .foto img {
   width: 100%;
   aspect-ratio: 4 / 5;
