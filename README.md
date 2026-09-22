@@ -70,19 +70,36 @@ tal cual, así que esto va a seguir funcionando igual dentro de un año sin que 
 
 ```
 index.html              la página entera
-css/estilos.css         paleta y tipografías, sacadas de la tarjeta original
+css/estilos.css         paleta y tipografías, sacadas de la tarjeta
 js/datos.js             👈 lo único que hace falta tocar
-js/invitacion.js        cuenta regresiva, mapas, QR, galería
+js/invitacion.js        cuenta regresiva, mapas, QR, galería, música
 js/qrcode.js            generador de QR (librería MIT, incluida para no depender de internet)
 bautismo-josefina.ics   el evento para Apple Calendar y Outlook
 assets/                 ilustración y flores recortadas de la tarjeta, fotos optimizadas
+assets/audio/           la música de fondo
 originales/             las fotos y la tarjeta como las mandaron, sin tocar
 herramientas/           scripts para regenerar assets/ si cambia una foto
 ```
 
+### La música
+
+Suena *Träumerei*, el séptimo movimiento de **Escenas de infancia** de Robert Schumann, al piano
+por **Donald Betts**. La grabación es de [Musopen](https://musopen.org) y está en **dominio
+público** (Creative Commons Public Domain Mark 1.0), vía
+[Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Robert_Schumann_-_scenes_from_childhood,_op._15_-_vii._dreaming.ogg).
+Musopen pide atribución aunque no sea obligatoria, así que acá está.
+
+Para cambiar el tema, reemplazá los archivos de `assets/audio/` y actualizá los `<source>` de
+`index.html`. Tené en cuenta que el repositorio es público: no subas música con derechos.
+
+**Nunca arranca sola.** Los navegadores bloquean el audio automático desde hace años, así que un
+autoplay ni siquiera sonaría — solo quedaría roto. Hay un botón flotante abajo a la derecha, y con
+`preload="none"` el archivo no se descarga hasta que alguien lo toca.
+
 ### Si hay que cambiar una foto
 
-Poné la nueva en `originales/` con el mismo nombre y corré:
+Poné la nueva en `originales/`, agregá o cambiá su nombre en la lista `GALERIA` de
+`herramientas/preparar-assets.py`, y corré:
 
 ```bash
 python3 herramientas/preparar-assets.py
@@ -91,12 +108,19 @@ python3 herramientas/preparar-assets.py
 Recorta, redimensiona y optimiza todo de nuevo. No necesita instalar nada: usa `sips`, que ya
 viene con macOS.
 
+Si una foto muy vertical queda recortada con la cara afuera, en `index.html` esa `<figure>` lleva
+un `style="--enfoque: 6%"` que sube el recorte. 50% es el centro, 0% el borde de arriba.
+
 La imagen de preview que se ve al pegar el link en WhatsApp (`assets/og.jpg`) se arma abriendo
-`herramientas/og.html` en el navegador con la ventana en 1200×630 y sacando una captura.
+`herramientas/og.html` en el navegador con la ventana en 1200×630 y sacando una captura, o con
+`./herramientas/captura.sh 1200 630 og.png http://localhost:8777/herramientas/og.html`.
+
+Para comprobar que el QR apunta de verdad al álbum (y no solo que "parece un QR"), está
+`herramientas/leerqr.swift`, que lo decodifica con el framework Vision de macOS.
 
 ### Una advertencia sobre la paleta
 
-El crema del fondo (`--crema` en `css/estilos.css`) tiene que coincidir exactamente con la
-constante `PAPEL` de `herramientas/preparar-assets.py`. La ilustración trae sus bordes fundidos a
+El crema del fondo (`--crema` en `css/estilos.css`, hoy `#F6E9DD`) tiene que coincidir exactamente
+con la constante `PAPEL` de `herramientas/preparar-assets.py`. La ilustración trae sus bordes fundidos a
 ese color para que se apoye sobre el papel sin que se note el recorte: si cambiás uno y no el
 otro, aparece un rectángulo alrededor de la nena.

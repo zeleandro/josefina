@@ -20,9 +20,17 @@ ORIG = os.path.join(RAIZ, 'originales')
 DEST = os.path.join(RAIZ, 'assets')
 FOTOS = os.path.join(DEST, 'fotos')
 
+TARJETA = 'tarjeta-modificada.jpg'
+
 # El crema exacto del papel de la tarjeta. Tiene que coincidir con
 # --crema en css/estilos.css, o se va a ver el rectángulo de la ilustración.
-PAPEL = (0xF6, 0xE7, 0xDA)
+PAPEL = (0xF6, 0xE9, 0xDD)
+
+# Las fotos de Josefina, en el mismo orden en que aparecen en la galería.
+GALERIA = ['recien-nacida', 'primeros-dias', 'ojitos', 'bebe',
+           'felicidad', 'puchero', 'merienda', 'alegria', 'sunset']
+# La que encabeza la sección de la ceremonia.
+CEREMONIA = 'pequenita'
 
 def sips(*args):
     subprocess.run(['sips'] + list(args), capture_output=True, check=True)
@@ -33,38 +41,50 @@ def recorte(origen, destino, y, x, alto, ancho):
 
 def principal():
     os.makedirs(FOTOS, exist_ok=True)
-    tarjeta = os.path.join(ORIG, 'tarjeta.jpg')
+    tarjeta = os.path.join(ORIG, TARJETA)
     tmp = os.path.join(DEST, '_tmp.jpg')
 
-    # ── Ilustración: la escena central, sin los ramitos de las esquinas
-    #    del marco, y con los bordes fundidos al color del papel.
-    recorte(tarjeta, tmp, 40, 120, 572, 790)
+    # ── Ilustración: la escena central (nena, paloma, flores).
+    #    Hay que tapar dos cosas que se cuelan en el recorte: el ramo de la
+    #    esquina superior izquierda y una voluta del marco arriba a la derecha.
+    #    No hay fondo limpio para clonar, así que se rellenan planos y se
+    #    difuminan hacia adentro.
+    recorte(tarjeta, tmp, 35, 40, 710, 950)
     w, h, px = img.load(tmp)
-    img.clone_soft(w, h, px, 0, 0, 0, 150, 195, 140, feather=45, edges='rb')
-    img.clone_soft(w, h, px, 670, 0, 670, 160, 120, 120, feather=45, edges='lb')
-    img.shift_to(w, h, px, img.bg_color(w, h, px, 380, 8, 14), PAPEL)
+    # El ramo de la esquina ocupa una L: dos rectangulos, para no rozar
+    # el pelo de la nena, que empieza en x~295.
+    img.fill_soft(w, h, px, 0, 0, 310, 200, (0xF5, 0xE7, 0xDC), feather=35, edges='rb')
+    img.fill_soft(w, h, px, 0, 0, 230, 360, (0xF4, 0xE6, 0xDB), feather=35, edges='rb')
+    img.fill_soft(w, h, px, 845, 0, 105, 80, (0xF8, 0xEA, 0xE1), feather=25, edges='lb')
+    img.shift_to(w, h, px, img.bg_color(w, h, px, 380, 20, 14), PAPEL)
     img.feather_to_color(w, h, px, PAPEL, 34)
     png = os.path.join(DEST, '_ilus.png')
     img.save_png(png, w, h, px)
     sips('-s', 'format', 'jpeg', '-s', 'formatOptions', '84', png,
          '--out', os.path.join(DEST, 'ilustracion.jpg'))
     os.remove(png)
+    print('ilustración')
 
-    # ── Ornamentos: esquina floral y guirnalda, con el fondo crema
-    #    recortado a transparente para que se apoyen sobre cualquier tono.
-    for nombre, (y, x, alto, ancho) in {
-        'esquina':   (45, 40, 258, 240),
-        'guirnalda': (1370, 337, 92, 350),
-    }.items():
-        recorte(tarjeta, tmp, y, x, alto, ancho)
-        w, h, px = img.load(tmp)
-        fondo = img.bg_color(w, h, px, w - 30, h - 30)
-        img.save_png(os.path.join(DEST, nombre + '.png'), w, h, px,
-                     img.alpha_key(w, h, px, fondo))
-        print('ornamento', nombre)
+    # ── Esquina floral: se espeja para la esquina opuesta. Lleva pegada una
+    #    vuelta del corazón del marco, que se tapa.
+    recorte(tarjeta, tmp, 32, 34, 310, 280)
+    w, h, px = img.load(tmp)
+    img.fill_soft(w, h, px, 0, 0, 46, 44, (0xF5, 0xE7, 0xDC), feather=18, edges='rb')
+    fondo = img.bg_color(w, h, px, w - 30, h - 30)
+    img.save_png(os.path.join(DEST, 'esquina.png'), w, h, px,
+                 img.alpha_key(w, h, px, fondo))
+    print('esquina')
+
+    # ── Guirnalda del pie: laurel y corazón.
+    recorte(tarjeta, tmp, 1378, 330, 95, 360)
+    w, h, px = img.load(tmp)
+    fondo = img.bg_color(w, h, px, w - 30, h - 30)
+    img.save_png(os.path.join(DEST, 'guirnalda.png'), w, h, px,
+                 img.alpha_key(w, h, px, fondo))
+    print('guirnalda')
 
     # ── Fotos de Josefina
-    for nombre in ('nacimiento', 'bebe', 'ojitos', 'sonrisa', 'puchero', 'sunset'):
+    for nombre in GALERIA + [CEREMONIA]:
         sips('-Z', '1200', '-s', 'format', 'jpeg', '-s', 'formatOptions', '80',
              os.path.join(ORIG, nombre + '.jpg'), '--out', os.path.join(FOTOS, nombre + '.jpg'))
         print('foto', nombre)

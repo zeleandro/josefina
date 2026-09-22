@@ -5,7 +5,7 @@
 
 :root {
   /* Colores muestreados pixel a pixel de tarjeta.jpg */
-  --crema:      #F6E7DA;   /* el papel de la tarjeta */
+  --crema:      #F6E9DD;   /* el papel de la tarjeta */
   --fondo:      #F0DDCE;   /* la página, un tono más profundo que el papel */
   --fondo-2:    #EBD5C4;
   --dorado:     #A87B3C;
@@ -14,6 +14,7 @@
   --dorado-bt:  #8A6430;   /* fondo del boton principal */
   --rosa:       #C9908C;
   --rosa-os:    #A66C68;   /* rosa legible para texto informativo */
+  --rosa-marco: #E9B3A6;   /* el filete de la tarjeta, antes dorado */
   --rosa-cl:    #E7C6BF;
   --rosa-pal:   #F7E6DF;
   --salvia:     #7E8C6A;
@@ -71,53 +72,50 @@ img { max-width: 100%; height: auto; display: block; }
   isolation: isolate;
 }
 
-/* El doble filete dorado de la tarjeta */
-.papel::before,
-.papel::after {
+/* El filete rosa de la tarjeta: uno solo, no dos */
+.papel::before {
   content: '';
   position: absolute;
+  inset: clamp(9px, 2.2vw, 16px);
   pointer-events: none;
-  border: 1px solid var(--dorado-cl);
+  border: 1.5px solid var(--rosa-marco);
   border-radius: clamp(12px, 3vw, 22px);
   z-index: 1;
 }
-.papel::before { inset: clamp(8px, 2vw, 14px); }
-.papel::after  { inset: clamp(13px, 2.8vw, 20px); border-color: rgba(168, 123, 60, .3); border-radius: clamp(8px, 2.4vw, 17px); }
 
 .papel__contenido {
   position: relative;
   z-index: 2;
-  padding: clamp(22px, 5vw, 38px) clamp(20px, 5vw, 46px) clamp(26px, 5vw, 40px);
+  padding: clamp(22px, 5vw, 38px) clamp(20px, 5vw, 46px) clamp(46px, 10vw, 72px);
   text-align: center;
 }
 
 /* Las flores de las cuatro esquinas, espejadas desde un solo archivo */
 .esquina {
   position: absolute;
-  width: clamp(88px, 22vw, 148px);
+  width: clamp(88px, 22vw, 150px);
   height: auto;
   z-index: 3;
   pointer-events: none;
   user-select: none;
 }
 .esquina--si { top: 0; left: 0; }
-.esquina--sd { top: 0; right: 0; transform: scaleX(-1); }
-.esquina--ii { bottom: 0; left: 0; transform: scaleY(-1); }
 .esquina--id { bottom: 0; right: 0; transform: scale(-1); }
 
 /* La ilustración conserva el crema del original: los bordes se
    disuelven contra el papel con una máscara en vez de cortarse. */
 .ilustracion {
-  width: min(100%, 470px);
+  width: min(100%, 500px);
   margin: 0 auto clamp(2px, 1vw, 8px);
 }
 
-.intro {
-  margin: 0;
-  font-size: clamp(.95rem, 3.6vw, 1.22rem);
+.mi {
+  margin: 0 0 clamp(-10px, -1.6vw, -4px);
+  font-family: var(--script);
   font-weight: 400;
-  letter-spacing: .06em;
-  color: var(--tinta-cl);
+  font-size: clamp(1.7rem, 7vw, 2.6rem);
+  line-height: 1;
+  color: var(--dorado);
 }
 
 .titulo {
@@ -127,12 +125,6 @@ img { max-width: 100%; height: auto; display: block; }
   font-size: clamp(3.5rem, 15.5vw, 6rem);
   line-height: .92;
   margin: clamp(-2px, .4vw, 4px) 0 0;
-}
-
-.de {
-  font-size: clamp(1.05rem, 4vw, 1.4rem);
-  color: var(--tinta-cl);
-  margin: clamp(0px, .6vw, 4px) 0 0;
 }
 
 .nombre {
@@ -167,7 +159,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .persona { min-width: 0; padding: 0 clamp(4px, 2vw, 16px); }
 .persona + .persona {
-  border-left: 1px solid var(--dorado-cl);
+  border-left: 1px solid var(--rosa-marco);
 }
 
 .persona__rol {
@@ -381,6 +373,9 @@ img { max-width: 100%; height: auto; display: block; }
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
+  /* Las fotos muy verticales se recortan al medio y dejan la cara afuera:
+     --enfoque corre el recorte hacia arriba en las que lo necesitan. */
+  object-position: 50% var(--enfoque, 50%);
   border-radius: clamp(10px, 2.4vw, 16px);
   border: 1px solid rgba(201, 166, 107, .55);
   box-shadow: var(--sombra);
@@ -458,6 +453,46 @@ img { max-width: 100%; height: auto; display: block; }
   color: var(--dorado-os);
 }
 
+/* ────────────── MÚSICA ────────────── */
+
+.musica {
+  position: fixed;
+  right: clamp(14px, 4vw, 26px);
+  bottom: calc(clamp(14px, 4vw, 26px) + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 1px solid var(--rosa-marco);
+  border-radius: 50%;
+  background: var(--crema);
+  color: var(--dorado-os);
+  cursor: pointer;
+  box-shadow: 0 10px 24px -12px rgba(91, 74, 59, .55);
+  transition: transform .2s ease, background-color .25s ease, color .25s ease, border-color .25s ease;
+}
+.musica:hover { transform: translateY(-2px); }
+.musica svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.musica circle { fill: currentColor; stroke: none; }
+
+
+/* El estado se lee por el relleno del botón: crema apagado, dorado sonando.
+   Una nota tachada a 22px se empasta y no se entiende. */
+.musica.sonando {
+  background: var(--dorado-bt);
+  border-color: var(--dorado-bt);
+  color: #FFF7EE;
+}
+
 /* ────────────── VISOR DE FOTOS ────────────── */
 
 .visor {
@@ -502,5 +537,7 @@ img { max-width: 100%; height: auto; display: block; }
   .revelar { opacity: 1; transform: none; transition: none; }
   .bajar svg { animation: none; }
   .foto img:hover { transform: none; }
+  .musica { transition: background-color .25s ease, color .25s ease; }
+  .musica:hover { transform: none; }
   .boton { transition: none; }
 }

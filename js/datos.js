@@ -32,5 +32,5 @@ const DATOS = {
   // Álbum compartido de Google Photos, creado con la opción
   // "Permitir que colaboren" para que los invitados puedan subir fotos.
   // El QR de la página se genera solo a partir de este link.
-  album: 'https://photos.app.goo.gl/NZ3LQqaH943cowEo6',
+  album: 'https://photos.app.goo.gl/w4QCrVf73ixgPbE48',
 };

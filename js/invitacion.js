@@ -158,6 +158,54 @@
     items.forEach(function (el) { obs.observe(el); });
   })();
 
+  /* ── Música ─────────────────────────────────────────────── */
+  (function musica() {
+    var audio = document.getElementById('musica');
+    var btn = document.getElementById('musica-btn');
+    if (!audio || !btn) return;
+
+    var VOLUMEN = 0.55;
+    var fundido = null;
+
+    // iOS ignora audio.volume: ahí no hay fundido posible, y forzarlo
+    // solo agregaría medio segundo de demora al apagar.
+    audio.volume = 0.5;
+    var hayVolumen = Math.abs(audio.volume - 0.5) < 0.01;
+    audio.volume = hayVolumen ? VOLUMEN : 1;
+
+    function fundir(hasta, alTerminar) {
+      if (!hayVolumen) { if (alTerminar) alTerminar(); return; }
+      clearInterval(fundido);
+      var desde = audio.volume, t0 = Date.now(), ms = 500;
+      fundido = setInterval(function () {
+        var p = Math.min(1, (Date.now() - t0) / ms);
+        audio.volume = desde + (hasta - desde) * p;
+        if (p === 1) { clearInterval(fundido); if (alTerminar) alTerminar(); }
+      }, 25);
+    }
+
+    function estado(sonando) {
+      btn.classList.toggle('sonando', sonando);
+      btn.setAttribute('aria-pressed', sonando ? 'true' : 'false');
+      btn.setAttribute('aria-label', sonando ? 'Silenciar la música' : 'Poner música');
+    }
+
+    btn.addEventListener('click', function () {
+      if (audio.paused) {
+        if (hayVolumen) audio.volume = 0;
+        var promesa = audio.play();
+        // Si el navegador rechaza la reproducción, el botón no puede
+        // quedarse diciendo que suena algo que no suena.
+        if (promesa && promesa.catch) promesa.catch(function () { estado(false); });
+        fundir(VOLUMEN);
+        estado(true);
+      } else {
+        fundir(0, function () { audio.pause(); });
+        estado(false);
+      }
+    });
+  })();
+
   /* ── Visor de fotos ─────────────────────────────────────── */
   (function visor() {
     var caja = document.getElementById('visor');

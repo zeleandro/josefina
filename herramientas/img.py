@@ -134,3 +134,19 @@ def feather_to_color(w, h, px, color, pad):
             s = (j * w + i) * 3
             for k in range(3):
                 px[s + k] = int(px[s + k] * a + color[k] * (1 - a) + .5)
+
+def fill_soft(w, h, px, x0, y0, bw, bh, color, feather=40, edges='all'):
+    """Tapa un rectangulo con un color plano, difuminando los bordes indicados
+    para que no se vea el parche. Sirve donde no hay fondo limpio que clonar."""
+    for j in range(bh):
+        for i in range(bw):
+            a = 1.0
+            if 'l' in edges or edges == 'all': a = min(a, i / feather)
+            if 'r' in edges or edges == 'all': a = min(a, (bw - 1 - i) / feather)
+            if 't' in edges or edges == 'all': a = min(a, j / feather)
+            if 'b' in edges or edges == 'all': a = min(a, (bh - 1 - j) / feather)
+            a = max(0.0, min(1.0, a))
+            if a == 0: continue
+            s = ((y0 + j) * w + x0 + i) * 3
+            for k in range(3):
+                px[s + k] = int(color[k] * a + px[s + k] * (1 - a) + .5)
